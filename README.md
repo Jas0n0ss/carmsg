@@ -1,5 +1,5 @@
 # carmsg
 
-#### QRcode generator for leave massage in the car.
+#### Leave Note QRcode Generator for cars outside parking.
 ---
 Generator link: https://oss.msft.vip/carmsg
