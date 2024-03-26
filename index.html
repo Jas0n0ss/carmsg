@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>挪车二维码生成器</title>
   <!-- Bootstrap CSS -->
-  <link href="https://jsd.quickso.cn/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="bootstrap.min.css" rel="stylesheet">
   <script src="qrcode.min.js"></script>
   <!-- html2canvas library -->
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="html2canvas.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -84,7 +84,7 @@
     }
 
     // Constructing the URL with parameters
-    var url = 'https://movecar.quickso.cn/info.html?plateNumber=' + encodeURIComponent(plateNumber) + '&phoneNumber=' + encodeURIComponent(phoneNumber);
+    var url = 'https://oss.msft.vip/carmsg/info.html?plateNumber=' + encodeURIComponent(plateNumber) + '&phoneNumber=' + encodeURIComponent(phoneNumber);
     var link = document.getElementById("previewLink");
 
     // Set URL to the <a> tag's href attribute
