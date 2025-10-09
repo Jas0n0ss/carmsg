@@ -2,4 +2,4 @@
 
 #### Leave Note QRcode Generator for cars outside parking.
 ---
-Generator link: https://git.msft.vip/carmsg
+Generator link: https://car.msfts.org/carmsg
