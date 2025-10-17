@@ -7,46 +7,42 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    /* 水波纹效果 */
-    .ripple {
-      position: relative;
-      overflow: hidden;
+    body { font-family: 'Inter', sans-serif; background-color: #F5F5F7; }
+    .card {
+      background-color: #FFFFFF;
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+      max-width: 360px;
+      width: 100%;
     }
-    .ripple::after {
-      content: '';
-      position: absolute;
-      border-radius: 50%;
-      width: 100px;
-      height: 100px;
-      top: 50%;
-      left: 50%;
-      pointer-events: none;
-      transform: scale(0) translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.3);
-      opacity: 0;
-      transition: transform 0.5s, opacity 1s;
+    .plate {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1C1C1E;
+      margin-bottom: 24px;
     }
-    .ripple:active::after {
-      transform: scale(4) translate(-50%, -50%);
-      opacity: 1;
-      transition: 0s;
+    .btn {
+      background-color: #007AFF;
+      color: #FFFFFF;
+      font-weight: 600;
+      font-size: 18px;
+      width: 100%;
+      padding: 16px;
+      border-radius: 16px;
+      transition: all 0.2s;
     }
+    .btn:hover { background-color: #005BB5; }
+    .btn:active { transform: scale(0.97); }
   </style>
 </head>
-<body class="bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50 flex flex-col items-center justify-center min-h-screen p-4">
-
-  <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm text-center transform transition-all duration-500 hover:scale-105">
-    <h1 class="text-3xl sm:text-4xl font-bold text-purple-700 mb-4 animate-pulse">联系车主</h1>
-
-    <div class="bg-purple-50 rounded-2xl py-6 px-4 mb-8">
-      <p class="text-gray-500 text-base sm:text-lg mb-1">车牌号</p>
-      <p id="plate" class="text-3xl sm:text-4xl font-extrabold text-gray-900"></p>
-    </div>
-
-    <button id="callBtn" class="ripple w-full bg-green-500 text-white py-4 rounded-xl text-lg sm:text-xl font-semibold shadow-lg hover:bg-green-600 transition transform hover:-translate-y-1 hover:scale-105 active:scale-95">
-      📞 呼叫车主
-    </button>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+  <div class="card">
+    <h1 class="text-2xl font-bold text-gray-900 mb-4">🚘 联系车主</h1>
+    <p class="text-gray-500 mb-2">车牌号</p>
+    <p id="plate" class="plate"></p>
+    <button id="callBtn" class="btn">📞 呼叫车主</button>
   </div>
 
   <script>
@@ -59,7 +55,6 @@
     } else {
       document.getElementById('plate').innerText = plate;
       document.getElementById('callBtn').addEventListener('click', () => {
-        // 打开手机拨号界面
         window.location.href = `tel:${phone}`;
       });
     }

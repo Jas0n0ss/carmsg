@@ -2,38 +2,68 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>车主停车码生成器</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>车主二维码生成器</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    #qrcode canvas { margin: auto; display: block; }
+    body { font-family: 'Inter', sans-serif; background-color: #F5F5F7; }
+    #qrcode canvas { margin: auto; display: block; border-radius: 16px; }
+    .input-field {
+      background-color: #FFFFFF;
+      border-radius: 12px;
+      padding: 14px 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      border: 1px solid #D1D1D6;
+      font-size: 16px;
+      width: 100%;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .input-field:focus {
+      border-color: #007AFF;
+      box-shadow: 0 0 0 2px rgba(0,122,255,0.2);
+    }
+    .btn {
+      background-color: #007AFF;
+      color: #FFFFFF;
+      border-radius: 16px;
+      padding: 14px;
+      font-weight: 600;
+      font-size: 16px;
+      width: 100%;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .btn:hover { background-color: #005BB5; }
+    .btn:active { transform: scale(0.97); }
+    .download-btn {
+      background-color: #34C759;
+      margin-top: 12px;
+    }
+    .download-btn:hover { background-color: #28A745; }
   </style>
 </head>
-<body class="bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50 flex flex-col items-center justify-center min-h-screen p-6">
-  <div class="bg-white rounded-3xl shadow-2xl p-10 w-full max-w-md">
-    <h1 class="text-3xl font-bold text-center text-purple-700 mb-8">车主停车码生成器</h1>
-    
-    <label class="block mb-5">
-      <span class="text-gray-700 font-medium">车牌号</span>
-      <input id="plate" type="text" class="mt-2 block w-full border-gray-300 rounded-xl shadow-sm p-3 focus:ring-2 focus:ring-purple-300 focus:outline-none" placeholder="例如：粤B12345">
+<body class="flex flex-col items-center justify-center min-h-screen p-6">
+
+  <div class="w-full max-w-md p-8 bg-white rounded-3xl shadow-lg">
+    <h1 class="text-2xl font-bold text-center mb-6 text-gray-900">🚗 车主二维码生成器</h1>
+
+    <label class="block mb-4">
+      <span class="text-gray-700 font-medium mb-1">车牌号</span>
+      <input id="plate" type="text" placeholder="例如：粤B12345" class="input-field">
     </label>
 
     <label class="block mb-6">
-      <span class="text-gray-700 font-medium">手机号</span>
-      <input id="phone" type="tel" class="mt-2 block w-full border-gray-300 rounded-xl shadow-sm p-3 focus:ring-2 focus:ring-purple-300 focus:outline-none" placeholder="例如：13812345678">
+      <span class="text-gray-700 font-medium mb-1">手机号</span>
+      <input id="phone" type="tel" placeholder="例如：13812345678" class="input-field">
     </label>
 
-    <button onclick="generateQR()" class="w-full bg-purple-600 text-white rounded-xl py-3 text-lg font-semibold shadow-lg hover:bg-purple-700 transition mb-4">
-      生成二维码
-    </button>
+    <button onclick="generateQR()" class="btn mb-2">生成二维码</button>
+    <button id="downloadBtn" class="btn download-btn hidden">⬇️ 下载二维码</button>
 
     <div id="qrcode" class="mt-6 flex justify-center"></div>
-
-    <button id="downloadBtn" class="w-full bg-green-500 text-white rounded-xl py-3 text-lg font-semibold shadow-lg hover:bg-green-600 transition mt-4 hidden">
-      ⬇️ 下载二维码
-    </button>
   </div>
 
   <script>
@@ -41,52 +71,31 @@
       const reg = /^1[3-9]\d{9}$/;
       return reg.test(phone);
     }
-
     function isValidPlate(plate) {
       const reg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼][A-Z][A-Z0-9]{5,6}$/i;
       return reg.test(plate);
     }
 
     let qrCodeInstance = null;
-
     function generateQR() {
       let plate = document.getElementById('plate').value.trim().toUpperCase();
       let phone = document.getElementById('phone').value.trim();
 
-      if (!plate || !phone) {
-        alert('请输入车牌号和手机号');
-        return;
-      }
-
-      if (!isValidPlate(plate)) {
-        alert('车牌号格式不正确，请输入有效的中国车牌');
-        return;
-      }
-
-      if (!isValidPhone(phone)) {
-        alert('手机号格式不正确，请输入有效的中国手机号');
-        return;
-      }
+      if (!plate || !phone) { alert('请输入车牌号和手机号'); return; }
+      if (!isValidPlate(plate)) { alert('车牌号格式不正确'); return; }
+      if (!isValidPhone(phone)) { alert('手机号格式不正确'); return; }
 
       const url = `${window.location.origin}${window.location.pathname.replace('index.html', '')}view.html?plate=${encodeURIComponent(plate)}&phone=${encodeURIComponent(phone)}`;
 
       const qrContainer = document.getElementById("qrcode");
       qrContainer.innerHTML = "";
-      qrCodeInstance = new QRCode(qrContainer, {
-        text: url,
-        width: 220,
-        height: 220,
-        colorDark: "#6B46C1",
-        colorLight: "#FFF0F5",
-        correctLevel: QRCode.CorrectLevel.H
-      });
+      qrCodeInstance = new QRCode(qrContainer, { text: url, width: 220, height: 220, colorDark: "#007AFF", colorLight: "#F5F5F7", correctLevel: QRCode.CorrectLevel.H });
 
       document.getElementById('downloadBtn').classList.remove('hidden');
     }
 
     document.getElementById('downloadBtn').addEventListener('click', () => {
       if (!qrCodeInstance) return;
-      // 获取 canvas
       const canvas = document.querySelector('#qrcode canvas');
       if (!canvas) return;
       const link = document.createElement('a');
