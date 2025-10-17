@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>联系车主</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+
+    /* 水波纹效果 */
+    .ripple {
+      position: relative;
+      overflow: hidden;
+    }
+    .ripple::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      top: 50%;
+      left: 50%;
+      pointer-events: none;
+      transform: scale(0) translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.3);
+      opacity: 0;
+      transition: transform 0.5s, opacity 1s;
+    }
+    .ripple:active::after {
+      transform: scale(4) translate(-50%, -50%);
+      opacity: 1;
+      transition: 0s;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50 flex flex-col items-center justify-center min-h-screen p-6 transition-all duration-500">
+  <div class="bg-white rounded-3xl shadow-2xl p-10 w-full max-w-md text-center transform transition-all duration-500 hover:scale-105">
+    <h1 class="text-3xl font-bold text-purple-700 mb-6 animate-pulse">🚘 车主联系页面</h1>
+    <p class="text-gray-500 text-lg mb-1">车牌号</p>
+    <p id="plate" class="text-4xl font-extrabold text-gray-900 mb-10"></p>
+    <button id="callBtn" class="ripple w-full bg-green-500 text-white py-3 rounded-xl text-lg font-semibold shadow-lg hover:bg-green-600 transition transform hover:-translate-y-1 hover:scale-105 active:scale-95">
+      📞 呼叫车主
+    </button>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const plate = params.get('plate');
+    const phone = params.get('phone');
+
+    if (!plate || !phone) {
+      document.body.innerHTML = '<p class="text-center text-red-600 text-xl mt-10">参数缺失或非法，无法显示。</p>';
+    } else {
+      document.getElementById('plate').innerText = plate;
+      document.getElementById('callBtn').addEventListener('click', () => {
+        // 直接打开手机拨号界面
+        window.location.href = `tel:${phone}`;
+      });
+    }
+  </script>
+</body>
+</html>
